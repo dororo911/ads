@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <link rel="icon" sizes="42x42" href="/ads.jpg" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modern Privacy-Aware Ad Simulator</title>
+  <title>Simulateur d'annonces respectueux de la vie privée</title>
   <style>
     :root {
       --bg: #09090b;
@@ -218,7 +218,7 @@
       box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.1);
     }
     .ad-card.winner::before {
-      content: '🏆 WINNER';
+      content: '🏆 GAGNANT';
       position: absolute; top: 16px; right: 16px;
       background: var(--success); color: #fff;
       font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 12px; letter-spacing: 1px;
@@ -230,6 +230,11 @@
     .ad-reason { font-size: 14px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid var(--primary); }
     .ad-stats { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); font-family: monospace; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;}
     .ad-stats span strong { color: #f8fafc; }
+
+    /* Scoring explainer */
+    .explain { margin-top: 16px; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.04); color: var(--text-muted); font-size: 13px; }
+    .explain .formula { display: inline-block; margin-top: 6px; font-family: monospace; color: #e2e8f0; }
+    .explain .footer-note { margin-top: 8px; font-size: 12px; color: #94a3b8; }
 
     /* Responsive */
     @media (max-width: 1024px) {
@@ -252,35 +257,35 @@
 
   <div class="container">
     <header class="hero glass-panel">
-      <div class="logo-mark" aria-label="Ads simulator logo">ADS</div>
-      <div class="badge">Privacy Era Ad Tech</div>
-      <h1>How Modern Ad Algorithms Work</h1>
+      <div class="logo-mark" aria-label="Logo du simulateur d'annonces">ADS</div>
+      <div class="badge">Ad tech à l'ère de la confidentialité</div>
+      <h1>Comment fonctionnent les algorithmes publicitaires modernes</h1>
       <p class="lead">
-        Simulate how a modern ad auction selects winning ads when faced with privacy restrictions.
-        Watch how denying consent removes signals, forcing the algorithm to rely on <strong>first-party data</strong> and <strong>context</strong> instead of highly personalized tracking.
+        Simulez comment une enchère publicitaire moderne sélectionne les annonces gagnantes face aux contraintes de confidentialité.
+        Voyez comment le refus de consentement supprime des signaux, forçant l'algorithme à se baser sur les <strong>données de première partie</strong> et le <strong>contexte</strong> plutôt que sur un suivi hyper-personnalisé.
       </p>
         <div class="page-chip">
           <span aria-hidden="true">📍</span>
-          <span>Current page:</span>
-          <strong id="pageLabel">Top 10 Tech News</strong>
+          <span>Page actuelle :</span>
+          <strong id="pageLabel">Top 10 actualités tech</strong>
         </div>
     </header>
 
     <div class="edu-grid">
       <section class="edu-card glass-panel">
         <div class="icon">🔍</div>
-        <h3>1. Data Collection</h3>
-        <p>In the past, third-party cookies tracked you across the web to build a perfect profile. Today, platforms rely heavily on <strong>First-Party Data</strong> (what you do directly on their app/site) and <strong>Contextual signals</strong> (the topic of the page you are on).</p>
+        <h3>1. Collecte de données</h3>
+        <p>Avant, les cookies tiers vous suivaient partout pour créer un profil parfait. Aujourd'hui, les plateformes s'appuient surtout sur les <strong>données de première partie</strong> (ce que vous faites sur leur app/site) et les <strong>signaux contextuels</strong> (le sujet de la page que vous lisez).</p>
       </section>
       <section class="edu-card glass-panel">
         <div class="icon">🛡️</div>
-        <h3>2. The Privacy Impact</h3>
-        <p>Your consent choices legally block data. If you disable cross-site tracking or location sharing, the algorithm's vision becomes blurred. It cannot use your search history or actual interests to pick the ad.</p>
+        <h3>2. Impact de la vie privée</h3>
+        <p>Vos choix de consentement bloquent légalement des données. Si vous désactivez le suivi inter-sites ou le partage de localisation, la vision de l'algorithme se brouille. Il ne peut plus utiliser votre historique de recherche ou vos vrais centres d'intérêt pour choisir l'annonce.</p>
       </section>
       <section class="edu-card glass-panel">
         <div class="icon">⚖️</div>
-        <h3>3. The Auction</h3>
-        <p>Ads are scored based on <em>Relevance</em> (matching your known signals) and <em>Bid</em> (how much the advertiser pays). With limited data, broad contextual ads often outscore high-bid, hyper-targeted ads.</p>
+        <h3>3. L'enchère</h3>
+        <p>Les annonces sont notées selon la <em>pertinence</em> (adéquation avec vos signaux connus) et l'<em>enchère</em> (combien l'annonceur paie). Avec peu de données, les annonces contextuelles larges dépassent souvent des annonces hyper-ciblées mais chères.</p>
       </section>
     </div>
 
@@ -289,59 +294,59 @@
       
       <!-- Panel 1: User Reality (Ground Truth) -->
       <aside class="panel glass-panel">
-        <h2>🧑‍💻 Actual User Profile</h2>
-        <p class="text-sm" style="font-size: 14px; margin-bottom: 24px;">This is who you <em>actually</em> are. (The platform only sees this if you permit it).</p>
+        <h2>🧑‍💻 Profil utilisateur réel</h2>
+        <p class="text-sm" style="font-size: 14px; margin-bottom: 24px;">Voici qui vous êtes <em>réellement</em>. (La plateforme ne le voit que si vous l'autorisez).</p>
         
-        <h4>True Interests</h4>
+        <h4>Vrais centres d'intérêt</h4>
         <div class="slider-group">
-          <label>Tech & Gadgets <span class="slider-val" id="valTech">85</span></label>
+          <label>Tech & gadgets <span class="slider-val" id="valTech">85</span></label>
           <input type="range" id="inputTech" min="0" max="100" value="85">
         </div>
         <div class="slider-group">
-          <label>Sports & Fitness <span class="slider-val" id="valSports">20</span></label>
+          <label>Sport & forme <span class="slider-val" id="valSports">20</span></label>
           <input type="range" id="inputSports" min="0" max="100" value="20">
         </div>
         <div class="slider-group">
-          <label>Fashion & Apparel <span class="slider-val" id="valFashion">40</span></label>
+          <label>Mode & vêtements <span class="slider-val" id="valFashion">40</span></label>
           <input type="range" id="inputFashion" min="0" max="100" value="40">
         </div>
 
-        <h4>History & Demographics</h4>
+        <h4>Historique et données démographiques</h4>
         <div class="field-row">
-          <span>Recent Search History</span>
+          <span>Historique de recherche récent</span>
           <select id="inputSearch">
-            <option value="gaming laptops">Gaming Laptops</option>
-            <option value="running shoes">Running Shoes</option>
-            <option value="designer jackets">Designer Jackets</option>
-            <option value="none">None / Random</option>
+            <option value="gaming laptops">Ordinateurs portables gaming</option>
+            <option value="running shoes">Chaussures de course</option>
+            <option value="designer jackets">Vestes de créateur</option>
+            <option value="none">Aucun / Aléatoire</option>
           </select>
         </div>
         <div class="field-row">
-          <span>Actual Location</span>
+          <span>Localisation réelle</span>
           <select id="inputLocation">
-            <option value="NYC">New York City, NY</option>
-            <option value="LDN">London, UK</option>
-            <option value="TOK">Tokyo, Japan</option>
+            <option value="NYC">New York, États-Unis</option>
+            <option value="LDN">Londres, Royaume-Uni</option>
+            <option value="TOK">Tokyo, Japon</option>
           </select>
         </div>
         <div class="field-row">
-          <span>Device Type (Always Visible)</span>
+          <span>Type d'appareil (toujours visible)</span>
           <select id="inputDevice">
-            <option value="Mobile">Mobile Smartphone</option>
-            <option value="Desktop">Desktop PC</option>
+            <option value="Mobile">Smartphone</option>
+            <option value="Desktop">Ordinateur de bureau</option>
           </select>
         </div>
       </aside>
 
       <!-- Panel 2: Privacy Controls (Consent) -->
       <aside class="panel glass-panel">
-        <h2>🛡️ Privacy Toggles</h2>
-        <p class="text-sm" style="font-size: 14px; margin-bottom: 24px;">Simulate a Cookie Consent Banner. What are you allowing the platform to collect?</p>
+        <h2>🛡️ Paramètres de confidentialité</h2>
+        <p class="text-sm" style="font-size: 14px; margin-bottom: 24px;">Simulez une bannière de consentement. Qu'autorisez-vous la plateforme à collecter ?</p>
 
         <label class="toggle-row">
           <div>
-             <strong>Cross-Site Tracking (3rd Party)</strong>
-             <p>Allow the platform to see your true interests by tracking your activity across other websites.</p>
+             <strong>Suivi inter-sites (tiers)</strong>
+             <p>Autorise la plateforme à connaître vos vrais centres d'intérêt en suivant votre activité sur d'autres sites.</p>
           </div>
           <div class="switch">
             <input type="checkbox" id="consentTracking" checked>
@@ -351,8 +356,8 @@
 
         <label class="toggle-row">
           <div>
-             <strong>Search & Purchase Data</strong>
-             <p>Allow using your past search queries from affiliated search engines or stores.</p>
+             <strong>Données de recherche et d'achat</strong>
+             <p>Autorise l'utilisation de vos recherches passées depuis les moteurs ou boutiques partenaires.</p>
           </div>
           <div class="switch">
             <input type="checkbox" id="consentHistory" checked>
@@ -362,8 +367,8 @@
 
         <label class="toggle-row">
           <div>
-             <strong>Precise Location</strong>
-             <p>Allow GPS/IP-based precise location targeting instead of generic country-level data.</p>
+             <strong>Localisation précise</strong>
+             <p>Autorise le ciblage précis via GPS/IP au lieu d'une localisation approximative par pays.</p>
           </div>
           <div class="switch">
             <input type="checkbox" id="consentLocation">
@@ -372,42 +377,47 @@
         </label>
 
         <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 16px; border-radius: 12px; margin-top: 24px;">
-          <h4 style="margin-top: 0; color: #10b981;">1st-Party Context (Unstoppable)</h4>
-          <p style="font-size: 13px; margin-bottom: 8px;">The algorithm always knows the context of the page you are currently viewing.</p>
+          <h4 style="margin-top: 0; color: #10b981;">Contexte de première partie (toujours visible)</h4>
+          <p style="font-size: 13px; margin-bottom: 8px;">L'algorithme connaît toujours le contexte de la page que vous consultez.</p>
           <div class="field-row" style="margin-bottom: 10px;">
-            <span>Current page topic</span>
+            <span>Sujet de la page actuelle</span>
             <select id="pageContext">
-              <option value="tech">Top 10 Tech News</option>
-              <option value="sports">Live Sports Recap</option>
-              <option value="fashion">Style Trends Today</option>
-              <option value="shopping">Trending Shopping Deals</option>
+              <option value="tech">Top 10 actualités tech</option>
+              <option value="sports">Résumé en direct des sports</option>
+              <option value="fashion">Tendances mode du jour</option>
+              <option value="shopping">Offres shopping du moment</option>
             </select>
           </div>
-          <span class="signal-pill first-party" id="contextPill" style="margin: 0;">📍 Current Page: "Top 10 Tech News"</span>
+          <span class="signal-pill first-party" id="contextPill" style="margin: 0;">📍 Page actuelle : "Top 10 actualités tech"</span>
         </div>
       </aside>
 
       <!-- Panel 3: The Algorithm View -->
       <main class="panel glass-panel main-algo">
-         <h2>⚡ The Ad Auction</h2>
+         <h2>⚡ L'enchère publicitaire</h2>
          
          <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 12px; margin-bottom: 24px;">
-           <h4 style="margin-top:0;">Algorithm Vision (What it actually knows about you)</h4>
+           <h4 style="margin-top:0;">Vision de l'algorithme (ce qu'il connaît réellement de vous)</h4>
            <div id="algoVision" style="min-height: 80px;">
              <!-- Populated dynamically via JS -->
            </div>
          </div>
 
-         <button class="btn-primary" id="runAuctionBtn">Run Ad Algorithm</button>
+         <button class="btn-primary" id="runAuctionBtn">Lancer l'algorithme publicitaire</button>
 
          <div id="resultsArea" style="display: none;">
-           <h3 style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 16px;">Auction Results Ranked</h3>
+           <h3 style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 16px;">Résultats de l'enchère classés</h3>
            <div id="adsList">
              <!-- Ads injected via JS -->
            </div>
            
            <div style="margin-top: 30px; font-size: 13px; color: #64748b; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;">
-             <strong>Simplified Limits:</strong> Real platforms process thousands of signals and candidates in milliseconds utilizing machine learning. This demo uses a simplified algebraic formula to illustrate the conceptual logic.
+             <strong>Limites simplifiées :</strong> Les vraies plateformes évaluent des milliers de signaux et de candidats en quelques millisecondes grâce au machine learning. Cette démo utilise une formule simplifiée pour illustrer la logique conceptuelle.
+            <div class="explain">
+              <strong>Modèle de scoring</strong><br />
+              <span class="formula">finalScore = relevance × 0.5 + quality × 0.2 + bid × 30</span>
+              <div class="footer-note">Démonstration pédagogique simplifiée, pas une plateforme publicitaire réelle.</div>
+            </div>
            </div>
          </div>
       </main>
@@ -447,47 +457,52 @@
       {
         id: 'ad_laptop',
         brand: 'HyperX Computers',
-        title: 'Ultimate Gaming Laptop Pro',
+        title: 'Ordinateur portable gaming ultime',
         targetInterest: 'tech',
         targetInterestMin: 75,
         targetSearch: 'gaming laptops',
         baseBid: 2.50, // High bid, very targeted
+        quality: 82,
         type: 'precision'
       },
       {
         id: 'ad_shoes',
         brand: 'AeroAthletics',
-        title: 'Marathon Running Shoes Sale',
+        title: 'Promo chaussures de course marathon',
         targetInterest: 'sports',
         targetInterestMin: 60,
         targetSearch: 'running shoes',
         baseBid: 1.80,
+        quality: 76,
         type: 'precision'
       },
       {
         id: 'ad_cafe',
         brand: 'NYC Central Roasters',
-        title: 'Best Artisan Coffee near Central Park',
+        title: 'Meilleur café artisanal près de Central Park',
         targetLocation: 'NYC',
         baseBid: 2.20,
+        quality: 74,
         type: 'local'
       },
       {
         id: 'ad_cloud',
         brand: 'SecureData Cloud',
-        title: '500GB Secure Cloud Storage',
+        title: 'Stockage cloud sécurisé 500 Go',
         targetContext: 'tech', // contextual targeting
         baseBid: 1.20, // Lower bid, but broad audience
+        quality: 70,
         type: 'contextual'
       },
       {
         id: 'ad_fashion',
         brand: 'Lumiere Boutique',
-        title: 'Spring Designer Collection 50% Off',
+        title: 'Collection de créateurs printemps -50%',
         targetInterest: 'fashion',
         targetInterestMin: 65,
         targetSearch: 'designer jackets',
         baseBid: 1.90,
+        quality: 79,
         type: 'precision'
       }
     ];
@@ -495,7 +510,7 @@
     // --- Logic functions ---
 
     function getAlgorithmSignals() {
-      // Base 1st party / Contextual data (Siempre knows)
+      // Base première partie / données contextuelles (toujours connues)
       let signals = {
         device: els.device.value,
         context: els.pageCtx.value,
@@ -541,26 +556,26 @@
       let html = '';
 
       const ctxLabel = currentPageLabel(sigs.context);
-      html += `<span class="signal-pill first-party">📱 Device: ${sigs.device}</span>`;
-      html += `<span class="signal-pill first-party">📰 Page Context: ${ctxLabel}</span>`;
+      html += `<span class="signal-pill first-party">📱 Appareil : ${sigs.device}</span>`;
+      html += `<span class="signal-pill first-party">📰 Contexte de page : ${ctxLabel}</span>`;
       
       if (sigs.trackingEnabled) {
-        html += `<span class="signal-pill">🎯 Interests: Tech(${sigs.interests.tech}) Sports(${sigs.interests.sports}) Fash(${sigs.interests.fashion})</span>`;
+        html += `<span class="signal-pill">🎯 Intérêts : Tech(${sigs.interests.tech}) Sport(${sigs.interests.sports}) Mode(${sigs.interests.fashion})</span>`;
       } else {
-        html += `<span class="signal-pill blocked">🚫 Exact Interests Hidden</span>`;
-        html += `<span class="signal-pill">🤖 Inferred Interests: Tech(${sigs.interests.tech}) (Derived from context)</span>`;
+        html += `<span class="signal-pill blocked">🚫 Intérêts exacts masqués</span>`;
+        html += `<span class="signal-pill">🤖 Intérêts déduits : Tech(${sigs.interests.tech}) (provenant du contexte)</span>`;
       }
 
       if (sigs.historyEnabled && sigs.search !== 'none') {
-        html += `<span class="signal-pill">🔍 Recent Search: ${sigs.search}</span>`;
+        html += `<span class="signal-pill">🔍 Recherche récente : ${sigs.search}</span>`;
       } else if (!sigs.historyEnabled) {
-        html += `<span class="signal-pill blocked">🚫 Search history hidden</span>`;
+        html += `<span class="signal-pill blocked">🚫 Historique de recherche masqué</span>`;
       }
 
       if (sigs.locationEnabled) {
-        html += `<span class="signal-pill">📍 Location: ${sigs.location}</span>`;
+        html += `<span class="signal-pill">📍 Localisation : ${sigs.location}</span>`;
       } else {
-        html += `<span class="signal-pill blocked">🚫 Exact Location Hidden</span>`;
+        html += `<span class="signal-pill blocked">🚫 Localisation précise masquée</span>`;
       }
 
       els.vision.innerHTML = html;
@@ -574,10 +589,10 @@
       if (ad.type === 'local') {
         if (sigs.location === ad.targetLocation) {
           relevanceScore += 100;
-          reason = `Matched exact location (${ad.targetLocation}) thanks to user consent.`;
+          reason = `Correspondance exacte de la localisation (${ad.targetLocation}) grâce au consentement.`;
         } else {
           relevanceScore = 0; // Completely irrelevant if location is wrong or unknown
-          reason = sigs.locationEnabled ? `Location mismatch.` : `Requires precise location, but consent was denied. Ad dropped out.`;
+          reason = sigs.locationEnabled ? `Localisation non concordante.` : `Nécessite une localisation précise, mais le consentement a été refusé. Annonce écartée.`;
           return { score: 0, reason };
         }
       }
@@ -590,7 +605,7 @@
         if (sigs.search === ad.targetSearch) {
           relevanceScore += 80;
           matched = true;
-          reason = `Strong match on exact search intent ("${ad.targetSearch}").`;
+          reason = `Forte correspondance sur l'intention de recherche exacte ("${ad.targetSearch}").`;
         }
         
         // Interest match
@@ -598,17 +613,18 @@
         if (knownInterestLvl >= ad.targetInterestMin) {
           relevanceScore += (knownInterestLvl * 0.5); // Provide partial score
           matched = true;
-          reason += reason ? ` Plus strong identified interest.` : `Matched strong algorithmic profile interest in ${ad.targetInterest}.`;
+          const interestLabel = labelForKey(ad.targetInterest);
+          reason += reason ? ` Plus un intérêt fort identifié.` : `Correspondance avec un intérêt fort dans ${interestLabel}.`;
         } else if (knownInterestLvl > 0 && !matched) {
           relevanceScore += (knownInterestLvl * 0.2); // Weak interest fallback
-          reason = `Weak contextual match. Score penalty applied.`;
+          reason = `Correspondance contextuelle faible. Malus appliqué.`;
           if (!sigs.trackingEnabled) {
-            reason = `Platform blind to real interests. Scored low due to missing data.`;
+            reason = `Plateforme aveugle aux intérêts réels. Score faible à cause du manque de données.`;
           }
         }
 
         if (!matched && !reason) {
-            reason = 'Irrelevant to known signals. Dropped.';
+            reason = 'Sans rapport avec les signaux connus. Écartée.';
             return { score: 0, reason };
         }
       }
@@ -617,44 +633,61 @@
       if (ad.type === 'contextual') {
         if (sigs.context === ad.targetContext) {
           relevanceScore += 60; // Broad but universally decent score natively
-          reason = `High score based blindly on 1st-party context (Reading ${ad.targetContext} news). Works without user data!`;
+          const contextLabel = labelForKey(ad.targetContext);
+          reason = `Score élevé basé uniquement sur le contexte de première partie (lecture de contenu ${contextLabel}). Fonctionne sans données utilisateur !`;
         }
       }
 
-      // Final Math: Score = Relevance (0-100) + (Bid * 20)
-      const bidScore = ad.baseBid * 20;
-      const finalScore = relevanceScore + bidScore;
+      // Final Math: Score = (Relevance * 0.5) + (Quality * 0.2) + (Bid * 30)
+      const qualityScore = ad.quality ?? 50;
+      const bidScore = ad.baseBid * 30;
+      const finalScore = (relevanceScore * 0.5) + (qualityScore * 0.2) + bidScore;
 
-      return { score: finalScore, relevanceScore, bidScore, reason };
+      return { score: finalScore, relevanceScore, qualityScore, bidScore, reason };
+    }
+
+    // Core auction algorithm: scores and ranks ads based on signals and bids
+    function adAuctionAlgorithm(ads, signals) {
+      const scoredAds = ads.map(ad => {
+        const { score, relevanceScore, qualityScore, bidScore, reason } = calculateScore(ad, signals);
+        return { ...ad, score, relevanceScore, qualityScore, bidScore, reason };
+      });
+
+      scoredAds.sort((a, b) => b.score - a.score);
+      return scoredAds;
+    }
+
+    function labelForKey(key) {
+      const map = {
+        tech: 'tech',
+        sports: 'sport',
+        fashion: 'mode',
+        shopping: 'shopping'
+      };
+      return map[key] || key;
     }
 
     function currentPageLabel(context) {
       const map = {
-        tech: 'Top 10 Tech News',
-        sports: 'Live Sports Recap',
-        fashion: 'Style Trends Today',
-        shopping: 'Trending Shopping Deals'
+        tech: 'Top 10 actualités tech',
+        sports: 'Résumé en direct des sports',
+        fashion: 'Tendances mode du jour',
+        shopping: 'Offres shopping du moment'
       };
-      return map[context] || 'Current Page';
+      return map[context] || 'Page actuelle';
     }
 
     function updatePageContextUI() {
       const label = currentPageLabel(els.pageCtx.value);
       if (els.pageLabel) els.pageLabel.textContent = label;
-      if (els.contextPill) els.contextPill.textContent = `📍 Current Page: "${label}"`;
+      if (els.contextPill) els.contextPill.textContent = `📍 Page actuelle : "${label}"`;
     }
 
     function runAuction() {
       const sigs = getAlgorithmSignals();
       updatePageContextUI();
-      
-      const scoredAds = adDatabase.map(ad => {
-        const { score, relevanceScore, bidScore, reason } = calculateScore(ad, sigs);
-        return { ...ad, score, relevanceScore, bidScore, reason };
-      });
 
-      // Rank descending by score
-      scoredAds.sort((a, b) => b.score - a.score);
+      const scoredAds = adAuctionAlgorithm(adDatabase, sigs);
 
       // Render
       els.adsList.innerHTML = scoredAds.map((ad, index) => {
@@ -668,12 +701,13 @@
               </div>
             </div>
             <div class="ad-reason">
-              <strong>${isWinner ? 'Why it won:' : 'Status:'}</strong> ${ad.reason}
+              <strong>${isWinner ? 'Pourquoi elle gagne :' : 'Statut :'}</strong> ${ad.reason}
             </div>
             <div class="ad-stats">
-              <span>Final Score: <strong>${ad.score.toFixed(1)}</strong></span>
-              <span>Relevance: <strong>${ad.relevanceScore ? ad.relevanceScore.toFixed(1) : 0}</strong></span>
-              <span>Advertiser Bid: <strong>$${ad.baseBid.toFixed(2)}</strong></span>
+              <span>Score final : <strong>${ad.score.toFixed(1)}</strong></span>
+              <span>Pertinence : <strong>${ad.relevanceScore ? ad.relevanceScore.toFixed(1) : 0}</strong></span>
+              <span>Qualité : <strong>${ad.qualityScore ? ad.qualityScore.toFixed(1) : (ad.quality ?? 0)}</strong></span>
+              <span>Enchère annonceur : <strong>$${ad.baseBid.toFixed(2)}</strong></span>
             </div>
           </div>
         `;
