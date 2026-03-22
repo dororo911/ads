@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" sizes="42x42" href="/ads.jpg" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Privacy-Aware Ad Simulator</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #8b5cf6;
+      --primary-hover: #7c3aed;
+      --secondary: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Background Orbs */
+    .bg-orbs {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.4;
+      animation: pulse 10s infinite alternate;
+    }
+    .orb-1 { width: 400px; height: 400px; background: var(--primary); top: -100px; left: -100px; }
+    .orb-2 { width: 500px; height: 500px; background: var(--secondary); bottom: -150px; right: -150px; animation-delay: -5s; }
+
+    @keyframes pulse {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+      100% { transform: scale(1.1) translate(50px, 50px); opacity: 0.5; }
+    }
+
+    .container {
+      width: min(1300px, calc(100% - 40px));
+      margin: 40px auto;
+    }
+
+    /* Typography & Core UI */
+    h1, h2, h3, h4 { margin: 0 0 10px 0; font-weight: 600; line-height: 1.2; }
+    h1 { font-size: clamp(32px, 5vw, 48px); background: linear-gradient(to right, #e2e8f0, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { font-size: 22px; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; }
+    h3 { font-size: 18px; color: #e2e8f0; }
+    h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 20px; margin-bottom: 12px; }
+    p { margin: 0 0 16px 0; color: var(--text-muted); }
+    
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: rgba(139, 92, 246, 0.2);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      margin-bottom: 16px;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      margin-bottom: 14px;
+      user-select: none;
+    }
+
+    .page-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      margin-top: 14px;
+      font-weight: 600;
+    }
+
+    .glass-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Hero Section */
+    .hero { text-align: center; padding: 60px 24px; margin-bottom: 40px; }
+    .hero .lead { max-width: 800px; margin: 0 auto; font-size: 18px; color: #cbd5e1; }
+
+    /* Educational Grid */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .edu-card h3 { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .edu-card .icon { font-size: 24px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; }
+
+    /* Workspace Simulation */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.5fr;
+      gap: 24px;
+    }
+
+    /* Form Elements */
+    .slider-group { margin-bottom: 20px; }
+    .slider-group label { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; color: #e2e8f0; font-weight: 500; }
+    .slider-val { color: var(--primary); font-family: monospace; font-size: 16px; }
+    input[type="range"] {
+      width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1);
+      outline: none; -webkit-appearance: none; appearance: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%;
+      background: var(--primary); box-shadow: 0 0 10px var(--primary); transition: 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+    .field-row { display: flex; flex-direction: column; margin-bottom: 16px; }
+    .field-row span { font-size: 14px; margin-bottom: 6px; color: #e2e8f0; }
+    select {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--card-border);
+      color: #f8fafc; padding: 10px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; outline: none;
+    }
+    select:focus { border-color: var(--primary); }
+
+    /* Toggle Switch */
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+    .toggle-row div p { font-size: 12px; margin: 4px 0 0 0; line-height: 1.4; color: #64748b; }
+    .toggle-row strong { color: #e2e8f0; font-size: 15px; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; margin-left:10px;}
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider.round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 34px; }
+    .slider.round:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider.round { background-color: var(--success); }
+    input:checked + .slider.round:before { transform: translateX(20px); }
+
+    /* Algorithm Vision Panel */
+    .signal-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 8px; font-size: 13px; font-family: monospace;
+      background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd; margin: 0 8px 8px 0;
+    }
+    .signal-pill.blocked { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #fca5a5; text-decoration: line-through; }
+    .signal-pill.first-party { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+
+    .btn-primary {
+      width: 100%; padding: 16px; border: none; border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white; font-size: 16px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 10px 20px -10px var(--primary);
+      transition: all 0.2s ease; margin-bottom: 20px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px -10px var(--primary); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* Ads Result Area */
+    .ad-card {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--card-border);
+      border-radius: 14px; padding: 16px; margin-bottom: 16px;
+      position: relative; overflow: hidden;
+      animation: slideIn 0.4s ease forwards;
+      opacity: 0; transform: translateY(20px);
+    }
+    .ad-card:nth-child(2) { animation-delay: 0.1s; }
+    .ad-card:nth-child(3) { animation-delay: 0.2s; }
+    .ad-card:nth-child(4) { animation-delay: 0.3s; }
+    .ad-card:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+
+    .ad-card.winner {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.05);
+      box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.1);
+    }
+    .ad-card.winner::before {
+      content: '🏆 WINNER';
+      position: absolute; top: 16px; right: 16px;
+      background: var(--success); color: #fff;
+      font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 12px; letter-spacing: 1px;
+    }
+    
+    .ad-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;}
+    .ad-title { font-size: 18px; font-weight: 600; color: #f8fafc; margin:0;}
+    .ad-brand { font-size: 13px; color: var(--secondary); margin-bottom: 8px;}
+    .ad-reason { font-size: 14px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid var(--primary); }
+    .ad-stats { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); font-family: monospace; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;}
+    .ad-stats span strong { color: #f8fafc; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .workspace-grid { grid-template-columns: 1fr 1fr; }
+      .main-algo { grid-column: 1 / -1; }
+    }
+    @media (max-width: 768px) {
+      .workspace-grid { grid-template-columns: 1fr; }
+      .hero { padding: 40px 16px; }
+      h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <div class="container">
+    <header class="hero glass-panel">
+      <div class="logo-mark" aria-label="Ads simulator logo">ADS</div>
+      <div class="badge">Privacy Era Ad Tech</div>
+      <h1>How Modern Ad Algorithms Work</h1>
+      <p class="lead">
+        Simulate how a modern ad auction selects winning ads when faced with privacy restrictions.
+        Watch how denying consent removes signals, forcing the algorithm to rely on <strong>first-party data</strong> and <strong>context</strong> instead of highly personalized tracking.
+      </p>
+        <div class="page-chip">
+          <span aria-hidden="true">📍</span>
+          <span>Current page:</span>
+          <strong id="pageLabel">Top 10 Tech News</strong>
+        </div>
+    </header>
+
+    <div class="edu-grid">
+      <section class="edu-card glass-panel">
+        <div class="icon">🔍</div>
+        <h3>1. Data Collection</h3>
+        <p>In the past, third-party cookies tracked you across the web to build a perfect profile. Today, platforms rely heavily on <strong>First-Party Data</strong> (what you do directly on their app/site) and <strong>Contextual signals</strong> (the topic of the page you are on).</p>
+      </section>
+      <section class="edu-card glass-panel">
+        <div class="icon">🛡️</div>
+        <h3>2. The Privacy Impact</h3>
+        <p>Your consent choices legally block data. If you disable cross-site tracking or location sharing, the algorithm's vision becomes blurred. It cannot use your search history or actual interests to pick the ad.</p>
+      </section>
+      <section class="edu-card glass-panel">
+        <div class="icon">⚖️</div>
+        <h3>3. The Auction</h3>
+        <p>Ads are scored based on <em>Relevance</em> (matching your known signals) and <em>Bid</em> (how much the advertiser pays). With limited data, broad contextual ads often outscore high-bid, hyper-targeted ads.</p>
+      </section>
+    </div>
+
+    <!-- The Simulation Workspace -->
+    <div class="workspace-grid">
+      
+      <!-- Panel 1: User Reality (Ground Truth) -->
+      <aside class="panel glass-panel">
+        <h2>🧑‍💻 Actual User Profile</h2>
+        <p class="text-sm" style="font-size: 14px; margin-bottom: 24px;">This is who you <em>actually</em> are. (The platform only sees this if you permit it).</p>
+        
+        <h4>True Interests</h4>
+        <div class="slider-group">
+          <label>Tech & Gadgets <span class="slider-val" id="valTech">85</span></label>
+          <input type="range" id="inputTech" min="0" max="100" value="85">
+        </div>
+        <div class="slider-group">
+          <label>Sports & Fitness <span class="slider-val" id="valSports">20</span></label>
+          <input type="range" id="inputSports" min="0" max="100" value="20">
+        </div>
+        <div class="slider-group">
+          <label>Fashion & Apparel <span class="slider-val" id="valFashion">40</span></label>
+          <input type="range" id="inputFashion" min="0" max="100" value="40">
+        </div>
+
+        <h4>History & Demographics</h4>
+        <div class="field-row">
+          <span>Recent Search History</span>
+          <select id="inputSearch">
+            <option value="gaming laptops">Gaming Laptops</option>
+            <option value="running shoes">Running Shoes</option>
+            <option value="designer jackets">Designer Jackets</option>
+            <option value="none">None / Random</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <span>Actual Location</span>
+          <select id="inputLocation">
+            <option value="NYC">New York City, NY</option>
+            <option value="LDN">London, UK</option>
+            <option value="TOK">Tokyo, Japan</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <span>Device Type (Always Visible)</span>
+          <select id="inputDevice">
+            <option value="Mobile">Mobile Smartphone</option>
+            <option value="Desktop">Desktop PC</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- Panel 2: Privacy Controls (Consent) -->
+      <aside class="panel glass-panel">
+        <h2>🛡️ Privacy Toggles</h2>
+        <p class="text-sm" style="font-size: 14px; margin-bottom: 24px;">Simulate a Cookie Consent Banner. What are you allowing the platform to collect?</p>
+
+        <label class="toggle-row">
+          <div>
+             <strong>Cross-Site Tracking (3rd Party)</strong>
+             <p>Allow the platform to see your true interests by tracking your activity across other websites.</p>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="consentTracking" checked>
+            <span class="slider round"></span>
+          </div>
+        </label>
+
+        <label class="toggle-row">
+          <div>
+             <strong>Search & Purchase Data</strong>
+             <p>Allow using your past search queries from affiliated search engines or stores.</p>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="consentHistory" checked>
+            <span class="slider round"></span>
+          </div>
+        </label>
+
+        <label class="toggle-row">
+          <div>
+             <strong>Precise Location</strong>
+             <p>Allow GPS/IP-based precise location targeting instead of generic country-level data.</p>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="consentLocation">
+            <span class="slider round"></span>
+          </div>
+        </label>
+
+        <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 16px; border-radius: 12px; margin-top: 24px;">
+          <h4 style="margin-top: 0; color: #10b981;">1st-Party Context (Unstoppable)</h4>
+          <p style="font-size: 13px; margin-bottom: 8px;">The algorithm always knows the context of the page you are currently viewing.</p>
+          <div class="field-row" style="margin-bottom: 10px;">
+            <span>Current page topic</span>
+            <select id="pageContext">
+              <option value="tech">Top 10 Tech News</option>
+              <option value="sports">Live Sports Recap</option>
+              <option value="fashion">Style Trends Today</option>
+              <option value="shopping">Trending Shopping Deals</option>
+            </select>
+          </div>
+          <span class="signal-pill first-party" id="contextPill" style="margin: 0;">📍 Current Page: "Top 10 Tech News"</span>
+        </div>
+      </aside>
+
+      <!-- Panel 3: The Algorithm View -->
+      <main class="panel glass-panel main-algo">
+         <h2>⚡ The Ad Auction</h2>
+         
+         <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+           <h4 style="margin-top:0;">Algorithm Vision (What it actually knows about you)</h4>
+           <div id="algoVision" style="min-height: 80px;">
+             <!-- Populated dynamically via JS -->
+           </div>
+         </div>
+
+         <button class="btn-primary" id="runAuctionBtn">Run Ad Algorithm</button>
+
+         <div id="resultsArea" style="display: none;">
+           <h3 style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 16px;">Auction Results Ranked</h3>
+           <div id="adsList">
+             <!-- Ads injected via JS -->
+           </div>
+           
+           <div style="margin-top: 30px; font-size: 13px; color: #64748b; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;">
+             <strong>Simplified Limits:</strong> Real platforms process thousands of signals and candidates in milliseconds utilizing machine learning. This demo uses a simplified algebraic formula to illustrate the conceptual logic.
+           </div>
+         </div>
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+    // --- State Elements ---
+    const els = {
+      tech: document.getElementById('inputTech'),
+      sports: document.getElementById('inputSports'),
+      fashion: document.getElementById('inputFashion'),
+      search: document.getElementById('inputSearch'),
+      location: document.getElementById('inputLocation'),
+      device: document.getElementById('inputDevice'),
+      pageCtx: document.getElementById('pageContext'),
+      pageLabel: document.getElementById('pageLabel'),
+      contextPill: document.getElementById('contextPill'),
+      
+      cTracking: document.getElementById('consentTracking'),
+      cHistory: document.getElementById('consentHistory'),
+      cLocation: document.getElementById('consentLocation'),
+      
+      valTech: document.getElementById('valTech'),
+      valSports: document.getElementById('valSports'),
+      valFashion: document.getElementById('valFashion'),
+      
+      vision: document.getElementById('algoVision'),
+      runBtn: document.getElementById('runAuctionBtn'),
+      results: document.getElementById('resultsArea'),
+      adsList: document.getElementById('adsList'),
+    };
+
+    // --- The Ad Candidate Database ---
+    const adDatabase = [
+      {
+        id: 'ad_laptop',
+        brand: 'HyperX Computers',
+        title: 'Ultimate Gaming Laptop Pro',
+        targetInterest: 'tech',
+        targetInterestMin: 75,
+        targetSearch: 'gaming laptops',
+        baseBid: 2.50, // High bid, very targeted
+        type: 'precision'
+      },
+      {
+        id: 'ad_shoes',
+        brand: 'AeroAthletics',
+        title: 'Marathon Running Shoes Sale',
+        targetInterest: 'sports',
+        targetInterestMin: 60,
+        targetSearch: 'running shoes',
+        baseBid: 1.80,
+        type: 'precision'
+      },
+      {
+        id: 'ad_cafe',
+        brand: 'NYC Central Roasters',
+        title: 'Best Artisan Coffee near Central Park',
+        targetLocation: 'NYC',
+        baseBid: 2.20,
+        type: 'local'
+      },
+      {
+        id: 'ad_cloud',
+        brand: 'SecureData Cloud',
+        title: '500GB Secure Cloud Storage',
+        targetContext: 'tech', // contextual targeting
+        baseBid: 1.20, // Lower bid, but broad audience
+        type: 'contextual'
+      },
+      {
+        id: 'ad_fashion',
+        brand: 'Lumiere Boutique',
+        title: 'Spring Designer Collection 50% Off',
+        targetInterest: 'fashion',
+        targetInterestMin: 65,
+        targetSearch: 'designer jackets',
+        baseBid: 1.90,
+        type: 'precision'
+      }
+    ];
+
+    // --- Logic functions ---
+
+    function getAlgorithmSignals() {
+      // Base 1st party / Contextual data (Siempre knows)
+      let signals = {
+        device: els.device.value,
+        context: els.pageCtx.value,
+        interests: { tech: 50, sports: 10, fashion: 10 }, // Baseline assumption, adjusted by context
+        search: null,
+        location: null,
+        trackingEnabled: els.cTracking.checked,
+        historyEnabled: els.cHistory.checked,
+        locationEnabled: els.cLocation.checked
+      };
+
+      const inferredByContext = {
+        tech:   { tech: 60, sports: 12, fashion: 12 },
+        sports: { tech: 12, sports: 60, fashion: 12 },
+        fashion:{ tech: 10, sports: 12, fashion: 60 },
+        shopping:{ tech: 30, sports: 15, fashion: 45 }
+      };
+      signals.interests = inferredByContext[signals.context] || signals.interests;
+
+      // Apply consent filters
+      if (els.cTracking.checked) {
+        // Platform can read cross-site cookie payload
+        signals.interests = {
+          tech: parseInt(els.tech.value),
+          sports: parseInt(els.sports.value),
+          fashion: parseInt(els.fashion.value)
+        };
+      }
+
+      if (els.cHistory.checked) {
+        signals.search = els.search.value;
+      }
+
+      if (els.cLocation.checked) {
+        signals.location = els.location.value;
+      }
+
+      return signals;
+    }
+
+    function renderVision() {
+      const sigs = getAlgorithmSignals();
+      let html = '';
+
+      const ctxLabel = currentPageLabel(sigs.context);
+      html += `<span class="signal-pill first-party">📱 Device: ${sigs.device}</span>`;
+      html += `<span class="signal-pill first-party">📰 Page Context: ${ctxLabel}</span>`;
+      
+      if (sigs.trackingEnabled) {
+        html += `<span class="signal-pill">🎯 Interests: Tech(${sigs.interests.tech}) Sports(${sigs.interests.sports}) Fash(${sigs.interests.fashion})</span>`;
+      } else {
+        html += `<span class="signal-pill blocked">🚫 Exact Interests Hidden</span>`;
+        html += `<span class="signal-pill">🤖 Inferred Interests: Tech(${sigs.interests.tech}) (Derived from context)</span>`;
+      }
+
+      if (sigs.historyEnabled && sigs.search !== 'none') {
+        html += `<span class="signal-pill">🔍 Recent Search: ${sigs.search}</span>`;
+      } else if (!sigs.historyEnabled) {
+        html += `<span class="signal-pill blocked">🚫 Search history hidden</span>`;
+      }
+
+      if (sigs.locationEnabled) {
+        html += `<span class="signal-pill">📍 Location: ${sigs.location}</span>`;
+      } else {
+        html += `<span class="signal-pill blocked">🚫 Exact Location Hidden</span>`;
+      }
+
+      els.vision.innerHTML = html;
+    }
+
+    function calculateScore(ad, sigs) {
+      let relevanceScore = 0;
+      let reason = '';
+
+      // 1. Evaluate Location Ad
+      if (ad.type === 'local') {
+        if (sigs.location === ad.targetLocation) {
+          relevanceScore += 100;
+          reason = `Matched exact location (${ad.targetLocation}) thanks to user consent.`;
+        } else {
+          relevanceScore = 0; // Completely irrelevant if location is wrong or unknown
+          reason = sigs.locationEnabled ? `Location mismatch.` : `Requires precise location, but consent was denied. Ad dropped out.`;
+          return { score: 0, reason };
+        }
+      }
+
+      // 2. Evaluate Precision Ad (Interests / History)
+      if (ad.type === 'precision') {
+        let matched = false;
+        
+        // Exact search match is extremely strong
+        if (sigs.search === ad.targetSearch) {
+          relevanceScore += 80;
+          matched = true;
+          reason = `Strong match on exact search intent ("${ad.targetSearch}").`;
+        }
+        
+        // Interest match
+        const knownInterestLvl = sigs.interests[ad.targetInterest];
+        if (knownInterestLvl >= ad.targetInterestMin) {
+          relevanceScore += (knownInterestLvl * 0.5); // Provide partial score
+          matched = true;
+          reason += reason ? ` Plus strong identified interest.` : `Matched strong algorithmic profile interest in ${ad.targetInterest}.`;
+        } else if (knownInterestLvl > 0 && !matched) {
+          relevanceScore += (knownInterestLvl * 0.2); // Weak interest fallback
+          reason = `Weak contextual match. Score penalty applied.`;
+          if (!sigs.trackingEnabled) {
+            reason = `Platform blind to real interests. Scored low due to missing data.`;
+          }
+        }
+
+        if (!matched && !reason) {
+            reason = 'Irrelevant to known signals. Dropped.';
+            return { score: 0, reason };
+        }
+      }
+
+      // 3. Evaluate Contextual Ad
+      if (ad.type === 'contextual') {
+        if (sigs.context === ad.targetContext) {
+          relevanceScore += 60; // Broad but universally decent score natively
+          reason = `High score based blindly on 1st-party context (Reading ${ad.targetContext} news). Works without user data!`;
+        }
+      }
+
+      // Final Math: Score = Relevance (0-100) + (Bid * 20)
+      const bidScore = ad.baseBid * 20;
+      const finalScore = relevanceScore + bidScore;
+
+      return { score: finalScore, relevanceScore, bidScore, reason };
+    }
+
+    function currentPageLabel(context) {
+      const map = {
+        tech: 'Top 10 Tech News',
+        sports: 'Live Sports Recap',
+        fashion: 'Style Trends Today',
+        shopping: 'Trending Shopping Deals'
+      };
+      return map[context] || 'Current Page';
+    }
+
+    function updatePageContextUI() {
+      const label = currentPageLabel(els.pageCtx.value);
+      if (els.pageLabel) els.pageLabel.textContent = label;
+      if (els.contextPill) els.contextPill.textContent = `📍 Current Page: "${label}"`;
+    }
+
+    function runAuction() {
+      const sigs = getAlgorithmSignals();
+      updatePageContextUI();
+      
+      const scoredAds = adDatabase.map(ad => {
+        const { score, relevanceScore, bidScore, reason } = calculateScore(ad, sigs);
+        return { ...ad, score, relevanceScore, bidScore, reason };
+      });
+
+      // Rank descending by score
+      scoredAds.sort((a, b) => b.score - a.score);
+
+      // Render
+      els.adsList.innerHTML = scoredAds.map((ad, index) => {
+        const isWinner = index === 0;
+        return `
+          <div class="ad-card ${isWinner ? 'winner' : ''}">
+            <div class="ad-header">
+              <div>
+                <div class="ad-brand">${ad.brand}</div>
+                <h3 class="ad-title">${ad.title}</h3>
+              </div>
+            </div>
+            <div class="ad-reason">
+              <strong>${isWinner ? 'Why it won:' : 'Status:'}</strong> ${ad.reason}
+            </div>
+            <div class="ad-stats">
+              <span>Final Score: <strong>${ad.score.toFixed(1)}</strong></span>
+              <span>Relevance: <strong>${ad.relevanceScore ? ad.relevanceScore.toFixed(1) : 0}</strong></span>
+              <span>Advertiser Bid: <strong>$${ad.baseBid.toFixed(2)}</strong></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      els.results.style.display = 'block';
+      els.results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // --- Initialization & Listeners ---
+    
+    function attachListeners() {
+      const inputs = [els.tech, els.sports, els.fashion, els.search, els.location, els.device, els.pageCtx, els.cTracking, els.cHistory, els.cLocation];
+      
+      inputs.forEach(input => {
+        ['input', 'change'].forEach(evt => {
+          input.addEventListener(evt, () => {
+            if (input === els.tech) els.valTech.innerText = input.value;
+            if (input === els.sports) els.valSports.innerText = input.value;
+            if (input === els.fashion) els.valFashion.innerText = input.value;
+            if (input === els.pageCtx) updatePageContextUI();
+            renderVision();
+          });
+        });
+      });
+
+      els.runBtn.addEventListener('click', runAuction);
+    }
+
+    // Bootstrap
+    renderVision();
+    updatePageContextUI();
+    attachListeners();
+
+  </script>
+</body>
+</html>
